@@ -26,15 +26,28 @@
               (display text out)))
           text)))))
 
-(define text (get-text))
-
 (define (is-hanzi? c)
   (let ([ord (char->integer c)])
     (and (>= ord #x4e00) (<= ord #x9fff))))
 
-(define hanzi-set
-  (for/set ([ch text]
-            #:when (is-hanzi? ch))
-    ch))
+;; Main
 
-hanzi-set
+(define text (get-text))
+
+(define counts-vec
+  (let ([update-count (lambda (acc ch)
+                          (hash-update acc ch
+                            (lambda (n) (add1 n))
+                            (lambda () 0)))])
+    (~>> (for/list ([ch text] #:when (is-hanzi? ch)) ch)
+         (sequence-fold update-count (make-immutable-hash))
+         hash->list
+         (sort _ > #:key cdr)
+         list->vector)))
+
+(printf "Found ~s total hanzi!\n\n" (vector-length counts-vec))
+
+(printf "Most common hanzi:\n")
+(for ([i 20])
+  (match-let ([(cons k v) (vector-ref counts-vec i)])
+    (printf "~a. ~a => ~a\n" (add1 i) k v)))

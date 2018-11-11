@@ -1,4 +1,5 @@
 - document good setup for vs code
+- document keyboard shortcuts in DrRacket
 - cedict processing example
 - simple web server
 - simple gui
