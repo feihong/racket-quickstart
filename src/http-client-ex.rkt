@@ -1,19 +1,18 @@
 #lang racket
 
-(require racket/pretty)
-(require net/http-client)
+(require threading)
+(require net/url)
 
 (define (download-text)
-  (define hc (http-conn-open "www.voachinese.com" #:ssl? #t))
-  (define-values (status headers port) (http-conn-sendrecv! hc "/"))
+  (define-values (port headers)
+  (~> "http://voachinese.com"
+      string->url
+      (get-pure-port/headers #:redirections 5 #:status? #t)))
 
-  (printf "Status: ~a\n" status)
-  (printf "Headers: ~a\n" (pretty-format headers))
+  (printf "Headers: ~a\n" (string-replace headers "\r\n" "\n"))
 
-  (define output (port->string port))
-  (http-conn-close! hc)
-
-  (printf "Response size: ~a\n" (string-length output))
-  output)
+  (define text (port->string port))
+  (printf "Response size: ~a\n" (string-length text))
+  text)
 
 (download-text)
