@@ -1,5 +1,8 @@
 - document good setup for vs code
-- document keyboard shortcuts in DrRacket
-- cedict processing example
+- document most useful keyboard shortcuts in DrRacket
+- cedict processing
 - simple web server
+  - return json
+- four square api
 - simple gui
+  - box layout
