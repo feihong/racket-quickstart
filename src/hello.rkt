@@ -8,7 +8,7 @@
   (~> (random #x4e00 (add1 #x9fff))
       (integer->char)))
 
-(printf "Random characters:\n")
+(printf "Totally random hanzi:\n")
 
 (for ((_ 8))
   (printf "~c\n" (random-hanzi)))
