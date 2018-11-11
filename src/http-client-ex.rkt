@@ -3,16 +3,17 @@
 (require racket/pretty)
 (require net/http-client)
 
-(define hc (http-conn-open "www.voachinese.com" #:ssl? #t))
+(define (download-text)
+  (define hc (http-conn-open "www.voachinese.com" #:ssl? #t))
+  (define-values (status headers port) (http-conn-sendrecv! hc "/"))
 
-(define-values (status headers port) (http-conn-sendrecv! hc "/"))
+  (printf "Status: ~a\n" status)
+  (printf "Headers: ~a\n" (pretty-format headers))
 
-(printf "~a\n" status)
-(pretty-print headers)
+  (define output (port->string port))
+  (http-conn-close! hc)
 
-(define output (port->string port))
-(printf "Response size: ~a\n" (string-length output))
+  (printf "Response size: ~a\n" (string-length output))
+  output)
 
-
-
-(http-conn-close! hc)
+(download-text)

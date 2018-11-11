@@ -10,5 +10,5 @@
 
 (printf "Totally random hanzi:\n")
 
-(for ((_ 8))
+(for ([_ 8])
   (printf "~c\n" (random-hanzi)))
