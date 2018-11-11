@@ -11,17 +11,17 @@
   (let ([diff (- (current-seconds) (file-or-directory-modify-seconds filename))])
     (< diff six-hours)))
 
+(define (request-text)
+  (~> "http://voachinese.com"
+      string->url
+      (get-pure-port/headers #:redirections 5 #:status? #t)))
+
 (define (download-text)
-  (define-values (port headers)
-    (~> "http://voachinese.com"
-        string->url
-        (get-pure-port/headers #:redirections 5 #:status? #t)))
-
-  (printf "Headers: ~a\n" (string-replace headers "\r\n" "\n"))
-
-  (define text (port->string port))
-  (printf "Response size: ~a\n" (string-length text))
-  text)
+  (let-values ([(port headers) (request-text)])
+    (printf "Headers: ~a\n" (string-replace headers "\r\n" "\n"))
+    (define text (port->string port))
+    (printf "Response size: ~a\n" (string-length text))
+    text))
 
 (define (get-text)
   (let ([filename "voachinese.html"])
