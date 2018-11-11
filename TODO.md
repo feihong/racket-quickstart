@@ -1,0 +1,4 @@
+- document good setup for vs code
+- cedict processing example
+- simple web server
+- simple gui
