@@ -46,7 +46,7 @@
                           (hash-update acc ch
                             (lambda (n) (add1 n))
                             (lambda () 0)))])
-    (~>> (for/list ([ch text] #:when (is-hanzi? ch)) ch)
+    (~>> (sequence-filter is-hanzi? text)
          (sequence-fold update-count (make-immutable-hash))
          hash->list
          (sort _ > #:key cdr)
@@ -61,9 +61,9 @@
 
 (define once-hanzi
   (~>> counts-vec
-       vector->list
-       (filter (lambda (pair) (= (cdr pair) 1)))
-       (map (lambda~>> car (make-string 1)))))
+       (sequence-filter (match-lambda [(cons k v) (= v 1)]))
+       (sequence-map (lambda~>> car (make-string 1)))
+       sequence->list))
 
 (when (length once-hanzi)
   (printf "\nHanzi that only appear once (~a):\n" (length once-hanzi))
