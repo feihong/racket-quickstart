@@ -2,6 +2,7 @@
 
 (call-with-output-file "test.txt" #:exists 'truncate
   (lambda (out)
-    (display "hello world\n你好世界" out)))
+    (for ([i (in-range 1 11)])
+      (fprintf out "~a. 你好世界\n" i))))
 
-(printf "Contents of file: ~s\n" (file->string "test.txt"))
+(printf "Contents of file:\n~a\n" (file->string "test.txt"))
