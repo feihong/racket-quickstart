@@ -27,12 +27,11 @@
   (let ([filename "voachinese.html"])
     (if (and (file-exists? filename) (file-is-recent? filename))
       (file->string filename)
-      (begin
-        (let ([text (download-text)])
-          (call-with-output-file filename #:exists 'truncate
-            (lambda (out)
-              (display text out)))
-          text)))))
+      (let ([text (download-text)])
+        (call-with-output-file filename #:exists 'truncate
+          (lambda (out)
+            (display text out)))
+        text))))
 
 (define (is-hanzi? c)
   (let ([ord (char->integer c)])
