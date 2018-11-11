@@ -63,7 +63,7 @@
   (~>> counts-vec
        vector->list
        (filter (lambda (pair) (= (cdr pair) 1)))
-       (map (lambda (pair) (~>> pair car (make-string 1))))))
+       (map (lambda~>> car (make-string 1)))))
 
 (when (length once-hanzi)
   (printf "\nHanzi that only appear once (~a):\n" (length once-hanzi))
