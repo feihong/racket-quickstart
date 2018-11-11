@@ -32,7 +32,9 @@
   (let ([ord (char->integer c)])
     (and (>= ord #x4e00) (<= ord #x9fff))))
 
+(define hanzi-set
+  (for/set ([ch text]
+            #:when (is-hanzi? ch))
+    ch))
 
-(for ([ch text]
-      #:when (is-hanzi? ch))
-  (display ch))
+hanzi-set
