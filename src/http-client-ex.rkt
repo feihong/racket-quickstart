@@ -1,7 +1,15 @@
+;; Get all hanzi from front page of VOA Chinese, then print out the most common
+;; and the least common characters.
 #lang racket
 
 (require threading)
 (require net/url)
+
+(define six-hours (* 6 60 60))
+
+(define (file-is-recent? filename)
+  (let ([diff (- (current-seconds) (file-or-directory-modify-seconds filename))])
+    (< diff six-hours)))
 
 (define (download-text)
   (define-values (port headers)
@@ -17,7 +25,7 @@
 
 (define (get-text)
   (let ([filename "voachinese.html"])
-    (if (file-exists? filename)
+    (if (and (file-exists? filename) (file-is-recent? filename))
       (file->string filename)
       (begin
         (let ([text (download-text)])
