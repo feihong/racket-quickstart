@@ -2,6 +2,7 @@
 ;; and the least common characters.
 #lang racket
 
+(require racket/generator)
 (require threading)
 (require net/url)
 
@@ -37,11 +38,19 @@
   (let ([ord (char->integer c)])
     (and (>= ord #x4e00) (<= ord #x9fff))))
 
+;; Get the first n elements of the given list along with 1-based index
+(define (take-with-number n lst)
+  (in-generator
+    (for ([i (in-range 1 (add1 n))]
+          [x lst])
+      (yield (cons i x)))))
+
 ;; Main
 
 (define text (get-text))
 
-(define counts-vec
+;; Compute association list of hanzi and frequency count
+(define counts-lst
   (let ([update-count (lambda (acc ch)
                           (hash-update acc ch
                             (lambda (n) (add1 n))
@@ -49,18 +58,18 @@
     (~>> (sequence-filter is-hanzi? text)
          (sequence-fold update-count (make-immutable-hash))
          hash->list
-         (sort _ > #:key cdr)
-         list->vector)))
+         (sort _ > #:key cdr))))
 
-(printf "Found ~s total hanzi!\n\n" (vector-length counts-vec))
+(printf "Found ~s total hanzi!\n\n" (length counts-lst))
 
 (printf "Most common hanzi:\n")
-(for ([i 20])
-  (match-let ([(cons k v) (vector-ref counts-vec i)])
-    (printf "~a. ~a => ~a\n" (add1 i) k v)))
+(for ([item (take-with-number 20 counts-lst)])
+  (match-let ([(cons i (cons k v)) item])
+    (printf "~a. ~a => ~a\n" i k v)))
 
+;; Compute list of hanzi that only appear once
 (define once-hanzi
-  (~>> counts-vec
+  (~>> counts-lst
        (sequence-filter (match-lambda [(cons k v) (= v 1)]))
        (sequence-map (lambda~>> car (make-string 1)))
        sequence->list))
