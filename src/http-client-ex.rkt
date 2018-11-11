@@ -51,3 +51,14 @@
 (for ([i 20])
   (match-let ([(cons k v) (vector-ref counts-vec i)])
     (printf "~a. ~a => ~a\n" (add1 i) k v)))
+
+(define once-hanzi
+  (~>> counts-vec
+       vector->list
+       (filter (lambda (pair) (= (cdr pair) 1)))
+       (map (lambda (pair) (~>> pair car (make-string 1))))))
+
+(when (length once-hanzi)
+  (printf "\nHanzi that only appear once (~a):\n" (length once-hanzi))
+  (printf "~a\n" (string-join once-hanzi ", "))
+)
