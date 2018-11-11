@@ -5,7 +5,10 @@
 1. Download [.dmg file](https://racket-lang.org/download/) and install
 1. Open `/Applications/Racket v7.1` and open `DrRacket`
 1. Select `Language > Choose Language... > The Racket Language
-1. `ln -s /Applications/Racket\ v7.1/bin/racket /usr/local/bin/racket`
+1. Run these commands:
+
+    ln -s /Applications/Racket\ v7.1/bin/racket /usr/local/bin/racket
+    ln -s /Applications/Racket\ v7.1/bin/raco /usr/local/bin/raco
 
 ## Common commands
 
@@ -16,3 +19,7 @@ Start interpreter
 Execute program
 
     racket src/hello.rkt
+
+Install package
+
+    raco pkg install
