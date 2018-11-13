@@ -5,6 +5,9 @@
 compiled/
 /doc/
 
+# Config:
+src/config.rkt
+
 # Generated files:
 *.html
 *.txt
