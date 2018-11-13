@@ -1,8 +1,11 @@
 - document good setup for vs code
 - document most useful keyboard shortcuts in DrRacket
+- foursquare api
 - cedict processing
 - simple web server
   - return json
 - four square api
 - simple gui
   - box layout
+- lens
+- parameterize

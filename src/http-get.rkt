@@ -53,8 +53,8 @@
 (define counts-lst
   (let ([update-count (lambda (acc ch)
                           (hash-update acc ch
-                            (lambda (n) (add1 n))
-                            (lambda () 0)))])
+                            (lambda (n) (add1 n))   ; key already exists
+                            (lambda () 0)))])       ; key doesn't exist
     (~>> (sequence-filter is-hanzi? text)
          (sequence-fold update-count (make-immutable-hash))
          hash->list
@@ -76,5 +76,4 @@
 
 (when (length once-hanzi)
   (printf "\nHanzi that only appear once (~a):\n" (length once-hanzi))
-  (printf "~a\n" (string-join once-hanzi ", "))
-)
+  (printf "~a\n" (string-join once-hanzi ", ")))
