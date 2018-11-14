@@ -4,7 +4,7 @@
 - cedict processing
 - simple web server
   - return json
-- four square api
+- struct
 - simple gui
   - box layout
 - lens

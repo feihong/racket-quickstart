@@ -16,6 +16,10 @@
 
 Add your dependencies to `info.rkt`.
 
+Install dependencies
+
+    raco pkg install --deps
+
 ## Common commands
 
 Start interpreter
@@ -25,7 +29,3 @@ Start interpreter
 Execute program
 
     racket src/hello.rkt
-
-Install dependencies
-
-    raco pkg install
