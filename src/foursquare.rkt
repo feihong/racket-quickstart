@@ -4,9 +4,10 @@
 
 #lang racket
 
-(require threading)
+(require racket/pretty)
 (require net/url)
 (require json)
+(require threading)
 (require "config.rkt")
 
 (define (get-url . params)
@@ -24,12 +25,18 @@
 ;;; (println client-id)
 ;;; (println client-secret)
 
-(~> (get-url
-      'client_id client-id
-      'client_secret client-secret
-      'll "41.967985,-87.688307"
-      'intent "browse"
-      'radius "1600"
-      'categoryId "4d4b7105d754a06374d81259")
-    (call/input-url get-pure-port read-json))  ; Food
+(define expr
+  (~> (get-url
+        'v "20181114"                           ; version based on date
+        'categoryId "4d4b7105d754a06374d81259"  ; Food
+        'client_id client-id
+        'client_secret client-secret
+        'll "41.967985,-87.688307"
+        'intent "browse"
+        'radius "1600")
+      (call/input-url get-pure-port read-json)))
+
+(call-with-output-file "foursquare.txt" #:exists 'truncate
+  (lambda (out)
+    (pretty-print expr out)))
 
