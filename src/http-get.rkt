@@ -18,9 +18,9 @@
       (get-pure-port/headers #:redirections 5 #:status? #t)))
 
 (define (download-text)
-  (let-values ([(port headers) (request-text)])
+  (let*-values ([(port headers) (request-text)]
+                [(text) (port->string port)])
     (printf "Headers: ~a\n" (string-replace headers "\r\n" "\n"))
-    (define text (port->string port))
     (printf "Response size: ~a\n" (string-length text))
     text))
 
