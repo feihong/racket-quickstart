@@ -1,0 +1,11 @@
+#lang racket
+
+(provide foursquare eventbrite-token facebook-token)
+
+(define foursquare (hash
+  'client-id "xxx"
+  'client-secret "xxx"))
+
+(define eventbrite-token "xxx")
+
+(define facebook-token "xxx")
