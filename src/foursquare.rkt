@@ -10,7 +10,7 @@
 (require threading)
 (require mischief/json)
 (require lens)
-(require "config.rkt")
+(require (only-in "config.rkt" foursquare))
 
 (define (get-url . params)
   (let ([query-lst (~> (apply hash params) hash->list)])
@@ -19,7 +19,7 @@
 
 (define (request-json)
   (match-let* (
-    [(hash-table ("client-id" client-id) ("client-secret" client-secret))
+    [(hash-table ('client-id client-id) ('client-secret client-secret))
      foursquare]
     [url (get-url
             'v "20181114"                           ; version based on date
