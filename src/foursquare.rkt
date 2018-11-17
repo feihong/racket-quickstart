@@ -49,5 +49,10 @@
   (lambda (out)
     (pretty-print expr out)))
 
+(define name-and-address
+  (lens-join/hash 'name (hash-ref-lens 'name)
+                  'address (hash-ref-nested-lens 'location 'address)))
 
-
+(~>> (lens-view (hash-ref-nested-lens 'response 'venues) expr)
+     (sequence-map (curry lens-view name-and-address))
+     (sequence-for-each (curry printf "~a\n")))
