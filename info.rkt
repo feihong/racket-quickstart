@@ -1,6 +1,6 @@
 #lang info
 (define collection "quickstart")
-(define deps '("base" "threading"))
-(define pkg-desc "Description Here")
-(define version "0.0")
+(define deps '("base" "threading" "mischief" "lens-lib"))
+(define pkg-desc "Feihong's Racket quickstart")
+(define version "0.1")
 (define pkg-authors '(feihong))

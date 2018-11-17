@@ -11,3 +11,4 @@ src/config.rkt
 # Generated files:
 *.html
 *.txt
+*.json

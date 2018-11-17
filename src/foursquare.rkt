@@ -8,6 +8,8 @@
 (require net/url)
 (require json)
 (require threading)
+(require mischief/json)
+(require lens)
 (require "config.rkt")
 
 (define (get-url . params)
@@ -15,28 +17,29 @@
     (~> (string->url "https://api.foursquare.com/v2/venues/search")
         (struct-copy url _ [query query-lst]))))
 
+(define (get-json)
+  (match-let (
+    [(hash-table ("client-id" client-id) ("client-secret" client-secret))
+     foursquare])
+    (~> (get-url
+          'v "20181114"                           ; version based on date
+          'categoryId "4d4b7105d754a06374d81259"  ; Food
+          'client_id client-id
+          'client_secret client-secret
+          'll "41.967985,-87.688307"
+          'intent "browse"
+          'radius "1600")
+        (call/input-url get-pure-port read-json))))
+
 ;; Main
 
-(match-define
-  (hash-table
-    ("client-id" client-id) ("client-secret" client-secret))
-  foursquare)
+(define expr (get-json))
 
-;;; (println client-id)
-;;; (println client-secret)
-
-(define expr
-  (~> (get-url
-        'v "20181114"                           ; version based on date
-        'categoryId "4d4b7105d754a06374d81259"  ; Food
-        'client_id client-id
-        'client_secret client-secret
-        'll "41.967985,-87.688307"
-        'intent "browse"
-        'radius "1600")
-      (call/input-url get-pure-port read-json)))
-
-(call-with-output-file "foursquare.txt" #:exists 'truncate
+(call-with-output-file "foursquare.rkt.txt" #:exists 'truncate
   (lambda (out)
     (pretty-print expr out)))
+
+(call-with-output-file "foursquare.json" #:exists 'truncate
+  (lambda (out)
+    (stylish-write-json expr out)))
 
