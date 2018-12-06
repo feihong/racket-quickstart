@@ -6,9 +6,10 @@
 1. Open `/Applications/Racket v7.1` and open `DrRacket`
 1. Select Language > Choose Language... > The Racket Language
 1. Run these commands:
-
+      ```bash     
       ln -s /Applications/Racket\ v7.1/bin/racket /usr/local/bin/racket
       ln -s /Applications/Racket\ v7.1/bin/raco /usr/local/bin/raco
+      ```
 
 ### Generate project
 
